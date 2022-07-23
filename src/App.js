@@ -1,20 +1,24 @@
-import { useState, useEffect } from "react";
-
-function Hello(){
-  useEffect(() => {
-    console.log("created :)");
-    return () => console.log("destroyed :(");
-  }, []);
-  return <h1>Hello</h1>;
-}
+import {useState} from "react";
 
 function App() {
-  const [showing, setShowing] = useState(false);
-  const onClick = () => setShowing((prev) => !prev);
+  const [toDo, setToDo] = useState("");
+  const [toDos, setToDos] = useState([]);
+  const onChange = (event) => setToDo(event.target.value);
+  const onSubmit = (event) => {
+    event.preventDefault();
+    if (toDo === ""){
+      return;
+    }
+    setToDos(currentArray => [toDo, ...currentArray]); //currentArray의 element 값들이 배열의 element 값으로
+    setToDo("");
+  };
   return (
     <div>
-      {showing ? <Hello /> : null}
-      <button onClick={onClick}>{showing? "Hide" : "Show"}</button>
+      <h1>MY To Dos ({toDos.length})</h1>
+      <form onSubmit={onSubmit}>
+        <input onChange={onChange} value={toDo} type="text" placeholder="Write your to do..."></input>
+        <button>Add To Do</button>
+      </form>
     </div>
   );
 }
